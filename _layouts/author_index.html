@@ -1,0 +1,18 @@
+---
+layout: page
+---
+
+<div>
+	{% for post in site.posts %}
+    {% if post.author contains page.author %}
+        {% capture this_year %}{{ post.date | date: "%Y" }}{% endcapture %}
+
+				{% unless year == this_year %}
+          {% assign year = this_year %}
+          <h2>{{ year }}</h2>
+        {% endunless %}
+
+  			{% include author.html %}
+    {% endif %}
+	{% endfor %}
+</div>

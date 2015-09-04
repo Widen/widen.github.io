@@ -1,0 +1,11 @@
+{% if post.author %}
+  {% assign title = post.title %}
+  {% assign url = post.url %}
+{% elsif page.author %}
+  {% assign title = page.title %}
+  {% assign url = page.url %}
+{% endif %}
+
+{% if title %}
+  <p><a href="{{ url | prepend: site.baseurl }}">{{ title }}</a></p>
+{% endif %}

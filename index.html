@@ -17,7 +17,8 @@ layout: default
             {% endif %}
           </p>
 
-          <time>{{ post.date | date: "%b %-d, %Y" }}</time> • {{post.author}}
+          <time>{{ post.date | date: "%b %-d, %Y" }}</time>
+           • <a href="/authors/{{ post.author | downcase | cgi_escape }}">{{post.author}}</a>
         </li>
       {% endfor %}
     </ul>
