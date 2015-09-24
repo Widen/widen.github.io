@@ -18,7 +18,7 @@ layout: default
           </p>
 
           <time>{{ post.date | date: "%b %-d, %Y" }}</time>
-           • <a href="/authors/{{ post.author | downcase | cgi_escape }}">{{post.author}}</a>
+           • <a href="/authors/{{ post.author | downcase | cgi_escape }}">{{ site.data.team.members[post.author].name }}</a>
         </li>
       {% endfor %}
     </ul>

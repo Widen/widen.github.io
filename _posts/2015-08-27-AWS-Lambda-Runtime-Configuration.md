@@ -1,6 +1,6 @@
 ---
 title:  Runtime Configuration for AWS' Lambda
-author: Mark Feltner
+author: feltnerm
 categories: aws lambda hack
 published: true
 permalink: /blog/2015/08/27/AWS-Lambda-Runtime-Configuration

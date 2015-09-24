@@ -1,9 +1,16 @@
 members:
-    mfeltner:
-      email: mfeltner@widen.com
-      github: feltnerm
-      name: "Mark Feltner"
-    dbeg:
-      email: dbeghin@widen.com
-      github: dbeg
-      name: "Dan Beghin"
+  feltnerm:
+    email: mfeltner@widen.com
+    github: feltnerm
+    name: "Mark Feltner"
+    description: This is an author's biography... blah blah blah.
+  dbeg:
+    email: dbeghin@widen.com
+    github: dbeg
+    name: "Dan Beghin"
+    description: This is an author's biography... blah blah blah.
+  rnicholus:
+    name: "Ray Nicholus"
+    github_username: "rnicholus"
+    email: "rnicholus@widen.com"
+    description: This is an author's biography... blah blah blah.
