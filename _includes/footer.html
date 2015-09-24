@@ -4,9 +4,11 @@
           <ul class="inline">
           {% for page in site.pages %}
             {% if page.title %}
-            <li>
-                <a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
-            </li>
+              {% unless page.url contains '/authors/' %}
+                <li>
+                    <a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
+                </li>
+              {% endunless %}
             {% endif %}
           {% endfor %}
           </ul>
