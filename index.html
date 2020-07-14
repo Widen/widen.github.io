@@ -4,7 +4,7 @@ layout: default
 <div class="posts">
     <ul>
       {% for post in site.posts %}
-        <li>
+        <article>
           <h1>
             <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
           </h1>
@@ -18,7 +18,7 @@ layout: default
           </p>
 
           <time>{{ post.date | date: "%b %-d, %Y" }}</time> • {{post.author}}
-        </li>
+        </article>
       {% endfor %}
     </ul>
 </div>

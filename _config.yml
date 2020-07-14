@@ -4,7 +4,20 @@ timezone: "America/Chicago"
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: "https://engineering.widen.com"
 email: "engineering@widen.com"
-disqus: widen-engineering
+
+remote_theme: widen/jekyll-theme-guardian@v0.0.1
+guardian:
+  style:
+    logo_url: https://embed.widencdn.net/img/widen/c17yrvuaac/400px@2x/Widen Engineering White Logo.png?u=mcuc7i
+    header_background_url: https://embed.widencdn.net/img/widen/m4ml1kuspv/exact/1680x90_Engineering Blog Banner.png?keep=c&crop=yes&u=ksmgip
+  social_links:
+    twitter: widendev
+    github_org: widen
+    github_repo: widen.github.io
+  tracking:
+    google_analytics_code: UA-1206716-19
+    disqus_shortname: widen-engineering
+
 
 # DEFAULTS
 defaults:
@@ -39,15 +52,6 @@ kramdown:
   smart: true
   input: GFM
   syntax_highlighter: rouge
-assets:
-  compress:
-    css:  sass
-    js:   uglifier
-  sources:
-    - _assets/images
-    - _assets/stylesheets
-    - _assets/fonts
 exclude: [Makefile, Rakefile, Gemfile, Gemfile.lock, README.md, vendor]
 repository: widen/widen.github.io
-google_analytics_code: UA-1206716-19
-gems: ['jekyll-git_metadata', 'jekyll-github-metadata', 'jekyll-sitemap']
+plugins: ['jekyll-github-metadata', 'jekyll-sitemap']

@@ -1,10 +1,9 @@
-# A sample Gemfile
 source "https://rubygems.org"
 
-gem "jekyll"
-gem "rouge"
-gem "compass"
-gem "jekyll-assets"
-gem "jekyll-git_metadata"
-gem "jekyll-github-metadata"
-gem "jekyll-sitemap"
+gem "github-pages", "~> 206", group: :jekyll_plugins
+
+group :jekyll_plugins do
+  gem "jekyll-feed", "~> 0.13.0"
+  gem "jekyll-github-metadata", "~> 2.13.0"
+  gem "jekyll-sitemap", "~> 1.4.0"
+end

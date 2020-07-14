@@ -13,7 +13,7 @@ Widen is a technology company, and like many other technology companies we do a 
     <img src="{{base}}/images/tale-of-performance/inventory-table.png" alt="Table showing the status of inventory operations."/>
 </a>
 
-This is a useful tool to have!  However, there is one problem - the sorting for this table is done client-side, and even when we limit it to retrieving only 1,000 results from the database, there is a noticeable (200-300ms) delay when sorting some of the more complex fields.  Is this acceptable for an internal tool?  Probably.  But I, like many of you, appreciate fast things, so let's see how speedy we can make this thing go. 
+This is a useful tool to have!  However, there is one problem - the sorting for this table is done client-side, and even when we limit it to retrieving only 1,000 results from the database, there is a noticeable (200-300ms) delay when sorting some of the more complex fields.  Is this acceptable for an internal tool?  Probably.  But I, like many of you, appreciate fast things, so let's see how speedy we can make this thing go.
 
 ## The starting point
 
@@ -33,7 +33,7 @@ const cmp = (a, b) => {
 
 const sortInventoryRuns = (sortBy, sortDirection) => {
   return this.props.inventoryRuns.sort((rowA, rowB) => {
-    // These end up looking something like 'Widen (WIDEN)', 
+    // These end up looking something like 'Widen (WIDEN)',
     // 'Customer 1 (CSTMR1)', etc.
     const accountNameA = ...
     const accountNameB = ...
@@ -56,10 +56,10 @@ const sortInventoryRuns = (sortBy, sortDirection) => {
           const isoB = rowB[TABLE_FIELDS.ranOn] ?
             moment(rowB[TABLE_FIELDS.ranOn]).toISOString() :
             ' '
-            
+
           const ranOnComparison = cmp(isoA, isoB)
-          const result = ranOnComparison === 0 ? 
-            accountNameA.localeCompare(accountNameB) : 
+          const result = ranOnComparison === 0 ?
+            accountNameA.localeCompare(accountNameB) :
             ranOnComparison
           return swapIfDesc(result, sortDirection)
         }
@@ -80,7 +80,7 @@ const sortInventoryRuns = (sortBy, sortDirection) => {
 
 We're going to focus on the "was successful" sort in this post, as we could potentially be sorting by three different fields (operation success, the "ran on" date, and the account name) to get a consistent post-sort result.
 
-We will begin with the most important step of performance tuning: a baseline.  Fortunately, all modern browsers have some form of a performance measurement tool. Here's a snippet of Chrome's in action against our code: 
+We will begin with the most important step of performance tuning: a baseline.  Fortunately, all modern browsers have some form of a performance measurement tool. Here's a snippet of Chrome's in action against our code:
 
 <a href="{{base}}/images/tale-of-performance/baseline-flamegraph.png">
     <img src="{{base}}/images/tale-of-performance/baseline-flamegraph.png" align="middle" alt="Performance baseline - ~195ms"/>
@@ -89,7 +89,7 @@ We will begin with the most important step of performance tuning: a baseline.  F
 However, for this experiment we want to test against multiple browsers (namely Chrome, Firefox, and Safari), so from here on out we will be looking at graphs.  Without further ado, here is the baseline performance of our initial JavaScript "was successful" sort in each browser:
 
 <a href="{{base}}/images/tale-of-performance/benchmarks/baseline.png">
-    <img src="{{{base}}/images/tale-of-performance/benchmarks/baseline.png" alt="Performance baseline graph - Chrome 183.93ms, Firefox 269.8ms, Safari 166.56ms"/>
+    <img src="{{base}}/images/tale-of-performance/benchmarks/baseline.png" alt="Performance baseline graph - Chrome 183.93ms, Firefox 269.8ms, Safari 166.56ms"/>
 </a>
 
 Before we move on, there are some things I want to mention about this measurement, and all future measurements:
@@ -104,7 +104,7 @@ Before we move on, there are some things I want to mention about this measuremen
 
 Reviewing our algorithm for sorting the "was successful" table field, we compare table rows in up to three different ways:
 
-1. The success of the inventory operation 
+1. The success of the inventory operation
 2. The date and time the inventory operation ran
 3. The name of the account for which the inventory operation was performed
 
@@ -121,7 +121,7 @@ const sortInventoryRuns = (sortBy, sortDirection) => {
     const accountNameB = ...
 
     switch (sortBy) {
-      ...other case statements... 
+      ...other case statements...
 
       case TABLE_FIELDS.wasSuccessful: {
         const wasSuccessfulComparison = cmp(rowA[sortBy], rowB[sortBy])
@@ -134,14 +134,14 @@ const sortInventoryRuns = (sortBy, sortDirection) => {
           //   moment(rowB[TABLE_FIELDS.ranOn]).toISOString() :
           //   ' '            
           // const ranOnComparison = cmp(isoA, isoB)
-          
+
           // And in with the new!
           const ranOnComparison = cmp(
-            new Date(rowA[TABLE_FIELDS.ranOn]).getTime(), 
+            new Date(rowA[TABLE_FIELDS.ranOn]).getTime(),
             new Date(rowB[TABLE_FIELDS.ranOn]).getTime()
           )
-          const result = ranOnComparison === 0 ? 
-            accountNameA.localeCompare(accountNameB) : 
+          const result = ranOnComparison === 0 ?
+            accountNameA.localeCompare(accountNameB) :
             ranOnComparison
           return swapIfDesc(result, sortDirection)
         }
@@ -161,7 +161,7 @@ Does this mean we should drop usage of `Date` completely, then?  It certainly se
 Here are the benchmarks for our `Date` implementation:
 
 <a href="{{base}}/images/tale-of-performance/benchmarks/date-get-time.png">
-    <img src="{{{base}}/images/tale-of-performance/benchmarks/date-get-time.png" alt="Performance baseline graph - Chrome 183.93ms, Firefox 269.8ms, Safari 166.56ms"/>
+    <img src="{{base}}/images/tale-of-performance/benchmarks/date-get-time.png" alt="Performance baseline graph - Chrome 183.93ms, Firefox 269.8ms, Safari 166.56ms"/>
 </a>
 
 Much better!  Versus the baseline implementation, our `Date` API implementation is **96.6%** faster in Chrome (**183.93ms** to **6.14ms**), **97.6%** faster in Firefox (**269.8ms** to **6.4ms**), and **96.9%** faster in Safari (**166.56ms** to **5.13ms**).
@@ -210,7 +210,7 @@ Rust does not have this problem. When compiling to WebAssembly, the only code we
 
 ## Setup
 
-Alright, now that we know a little bit more about both Rust and WebAssembly, let's get our stack set up and get going.  Fortunately for us, the Rust WebAssembly team has already assembled a fantastic book detailing the basics of using Rust for compiling to WebAssembly.  We'll be [following the setup instructions found there](https://rustwasm.github.io/book/game-of-life/setup.html){:target="_blank"}.  In short, this is: 
+Alright, now that we know a little bit more about both Rust and WebAssembly, let's get our stack set up and get going.  Fortunately for us, the Rust WebAssembly team has already assembled a fantastic book detailing the basics of using Rust for compiling to WebAssembly.  We'll be [following the setup instructions found there](https://rustwasm.github.io/book/game-of-life/setup.html){:target="_blank"}.  In short, this is:
 
 1. Installing the stable Rust toolchain
 2. Installing [wasm-pack](https://github.com/rustwasm/wasm-pack){:target="_blank"}, which will build our Rust into WebAssembly and JavaScript "glue" code using other tools (such as [wasm-bindgen](https://github.com/rustwasm/wasm-bindgen){:target="_blank"}) under the hood
@@ -234,7 +234,7 @@ inventory-project/
 ├── app/
 ├── other pre-existing modules...
 └── frontend/
-    ├── other pre-existing directories... 
+    ├── other pre-existing directories...
     └── rust/
         ├── Cargo.toml
         └── src/
@@ -256,7 +256,7 @@ use cfg_if::cfg_if;
 use wasm_bindgen::prelude::*;
 
 cfg_if! {
-    // When the `wee_alloc` feature is enabled, use `wee_alloc` 
+    // When the `wee_alloc` feature is enabled, use `wee_alloc`
     // as the global allocator.
     if #[cfg(feature = "wee_alloc")] {
         extern crate wee_alloc;
@@ -273,7 +273,7 @@ extern {
 
 #[wasm_bindgen]
 pub fn greet(name: &str) {
-    // Export a `greet` function from Rust to JavaScript that 
+    // Export a `greet` function from Rust to JavaScript that
     // alerts a pleasant greeting.
     alert(&format!("Hello from WebAssembly, {}!", name));
 }
@@ -309,15 +309,15 @@ cfg-if = "0.1.6"
 wasm-bindgen = "0.2"
 chrono = "0.4"
 
-# The `console_error_panic_hook` crate provides better debugging 
-# of panics by logging them with `console.error`. This is great 
-# for development, but requires all the `std::fmt` and 
+# The `console_error_panic_hook` crate provides better debugging
+# of panics by logging them with `console.error`. This is great
+# for development, but requires all the `std::fmt` and
 # `std::panicking` infrastructure, so isn't great for code size
 # when deploying.
 console_error_panic_hook = { version = "0.1.5", optional = true }
 
-# `wee_alloc` is a tiny allocator for wasm that is only ~1K in 
-# code size compared to the default allocator's ~10K. It is 
+# `wee_alloc` is a tiny allocator for wasm that is only ~1K in
+# code size compared to the default allocator's ~10K. It is
 # slower than the default allocator, however.
 wee_alloc = { version = "0.4.2", optional = true }
 ```
@@ -355,7 +355,7 @@ Let's package up the code into a WebAssembly module so that JavaScript can get a
 
 ```text
 $ wasm-pack build        
-  
+
   [1/9] 🦀  Checking `rustc` version...
   [2/9] 🔧  Checking crate configuration...
   [3/9] 🎯  Adding WASM target...
@@ -378,7 +378,7 @@ As you might see from the output above, we have a new directory in our `rust/` d
 
 ```text
 └── frontend/
-    ├── ... 
+    ├── ...
     └── rust/
         ├── Cargo.toml
         └── pkg
@@ -465,21 +465,21 @@ const sortInventoryRuns = (sortBy, sortDirection) => {
 
     switch (sortBy) {
       ...other case statements...
-      
+
       case TABLE_FIELDS.wasSuccessful: {
         const wasSuccessfulComparison = cmp(rowA[sortBy], rowB[sortBy])
         if (wasSuccessfulComparison === 0) {
           // Our old `Date` API comparison...
           // const ranOnComparison = cmp(
-          //   new Date(rowA[TABLE_FIELDS.ranOn]).getTime(), 
+          //   new Date(rowA[TABLE_FIELDS.ranOn]).getTime(),
           //   new Date(rowB[TABLE_FIELDS.ranOn]).getTime()
-          // ) 
-          
+          // )
+
           // And our new Rust date comparison!
-          const ranOnComparison 
+          const ranOnComparison
             = compareDates(rowA[TABLE_FIELDS.ranOn], runB[TABLE_FIELDS.ranOn])
-          const result = ranOnComparison === 0 ? 
-            accountNameA.localeCompare(accountNameB) : 
+          const result = ranOnComparison === 0 ?
+            accountNameA.localeCompare(accountNameB) :
             ranOnComparison
           return swapIfDesc(result, sortDirection)
         }
@@ -495,7 +495,7 @@ const sortInventoryRuns = (sortBy, sortDirection) => {
 And now for the benchmarks of this newly-oxidized sort implementation.  This is with the optimized version of our Rust/WebAssembly code (remember, `wasm-pack build` optimizes by default).
 
 <a href="{{base}}/images/tale-of-performance/benchmarks/optimized-rust.png">
-    <img src="{{{base}}/images/tale-of-performance/benchmarks/optimized-rust.png" alt="Performance baseline graph - Chrome 183.93ms, Firefox 269.8ms, Safari 166.56ms"/>
+    <img src="{{base}}/images/tale-of-performance/benchmarks/optimized-rust.png" alt="Performance baseline graph - Chrome 183.93ms, Firefox 269.8ms, Safari 166.56ms"/>
 </a>
 
 Not too bad!  Versus our initial `moment`-based implementation, in Chrome we see a **78%** improvement (**183.93ms** to **39.69ms**), in Firefox a **90%** improvement (**269.80ms** to **24.88ms**), and in Safari an **83%** improvement (**166.56ms** to **27.98ms**).
@@ -505,7 +505,7 @@ You'll also notice that the WebAssembly version of our date comparison code is q
 Because I was curious, here are the benchmarks for the _unoptimized_ version of our `compareDates` function:
 
 <a href="{{base}}/images/tale-of-performance/benchmarks/unoptimized-rust.png">
-    <img src="{{{base}}/images/tale-of-performance/benchmarks/unoptimized-rust.png" alt="Performance baseline graph - Chrome 183.93ms, Firefox 269.8ms, Safari 166.56ms"/>
+    <img src="{{base}}/images/tale-of-performance/benchmarks/unoptimized-rust.png" alt="Performance baseline graph - Chrome 183.93ms, Firefox 269.8ms, Safari 166.56ms"/>
 </a>
 
 While still acceptable for development, this is _much_ slower than the performance of the optimized version, but includes debug info and debug assertions.  Versus the optimized version of `compareDates`, the unoptimized version is **85%** slower in Chrome (**39.69ms** to **281.01ms**), **83%** slower in Firefox (**24.88ms** to **146.92ms**), and **83%** slower in Safari (**27.98ms** to **171.83ms**).
