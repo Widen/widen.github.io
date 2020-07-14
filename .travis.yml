@@ -1,0 +1,14 @@
+sudo: false
+language: ruby
+script: make travisPublish
+branches:
+  only:
+  - develop
+env:
+  global:
+  - GH_REF: github.com/Widen/widen.github.io
+  # GH_TOKEN for widendev
+  - secure: "a8HfRpYDiDcRGhGHxWk/NRUz3yyqg424SE0OMCqQ+5N6yzGgF2HhX+ss1ekIpvnDurVIXJjwyFZl7aLAgH7eYEIFORvvFpXIoW2paIyGicFQLRDe3tXtw6YcFBaCLc/pJ2SNmgOkOLgpc9fJc1O7mKIxuxDCzEpzxBYTEJ28uls="
+notifications:
+  slack:
+    secure: NUHgzSiX/9B6Xvka8L6X4VTnWH5ybwffi9gM469kqm+SSHWow8wb1I24t//YXJFdrQ86/CYIlZefc6NCIuu0d81JaeZ1YKmvUbb+56/jiThEEjOGrBir8EeCGj1ItCy5IihF8vXMjfbh+OT/+nv8VznsJ4hlyvnMZICXuPHrX4A=
