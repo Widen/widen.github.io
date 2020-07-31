@@ -5,7 +5,7 @@ baseurl: "" # the subpath of your site, e.g. /blog/
 url: "https://engineering.widen.com"
 email: "engineering@widen.com"
 
-remote_theme: widen/jekyll-theme-guardian@v0.0.2
+remote_theme: widen/jekyll-theme-guardian@v1.0.1
 guardian:
   style:
     logo_url: https://embed.widencdn.net/img/widen/c17yrvuaac/400px@2x/Widen Engineering White Logo.png?u=mcuc7i
@@ -14,6 +14,7 @@ guardian:
     twitter: widendev
     github_org: widen
     github_repo: widen.github.io
+    email_subscription_url: https://feedburner.google.com/fb/a/mailverify?uri=WidenEngineering
   tracking:
     google_analytics_code: UA-1206716-19
     disqus_shortname: widen-engineering
