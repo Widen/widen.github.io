@@ -55,4 +55,4 @@ kramdown:
   syntax_highlighter: rouge
 exclude: [Makefile, Rakefile, Gemfile, Gemfile.lock, README.md, vendor]
 repository: widen/widen.github.io
-plugins: ['jekyll-github-metadata', 'jekyll-sitemap']
+plugins: ['jekyll-github-metadata', 'jekyll-sitemap', 'jekyll-toc']
