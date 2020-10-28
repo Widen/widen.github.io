@@ -43,7 +43,7 @@ Relations Committee for guidance.
 
 ## Licensing
 
-Widen recommends the ISC. MIT and Apache are also viable. Talk with the Widen Developer Relations Committee if you have any questions.
+Widen recommends the ISC. MIT and Apache are also viable. Talk with the [Widen Developer Relations Committee](mailto://engineering@widen.com) if you have any questions.
 
 ## Infrastructure
 
