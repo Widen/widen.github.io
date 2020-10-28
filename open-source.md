@@ -29,7 +29,7 @@ for boilerplate for starting an effective open-source project.
 
 ## What can I release as open-source?
 
-Ensure your project will not contain any proprietary information related to
+Your project shall not contain any proprietary information related to
 the core business functionality of Widen.
 
 - Examples of good things to open source:
