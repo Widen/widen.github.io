@@ -3,14 +3,14 @@ title: "Automating Code Transformation With jscodeshift"
 date: 2021-01-21
 author: Mark Skelton
 categories: JavaScript codemod jscodeshift
-excerpt: "Tired of manual migrations? This article shows how to automate code transformations using jscodeshift to reduce manual work when performing migrations or refactors."
+excerpt: "Tired of manual refactoring? This article shows how to automate code transformations using jscodeshift to reduce manual work when performing jrefactors."
 ---
 
-The JavaScript ecosystem is fast paced and continuously changing. By the time you finish adopting some fancy new library, another library has come along with people telling you to drop everything and adopt it. Even if you pick a library and stick with it, breaking changes happen from time to time, which add great new features but sometimes mean a long or painful migration.
+The JavaScript ecosystem is fast paced and continuously changing. By the time you finish adopting some fancy new library, another library has come along with people telling you to drop everything and adopt it. Even if you pick a library and stick with it, breaking changes happen from time to time, which add great new features but sometimes mean a long or painful refactor.
 
-As a developer, there are a few ways of dealing with this problem. The first approach would be to never update your libraries so you don't have to spend time on updates. While this might save you some time, it also means you won't be getting security updates or access to new features that could save time in other ways. Another approach would be to always update your libraries to the latest versions soon after they come out. While this is better than the previous approach, it also means you will be spending a lot of extra time when performing migration steps.
+As a developer, there are a few ways of dealing with this problem. The first approach would be to never update your libraries so you don't have to spend time on updates. While this might save you some time, it also means you won't be getting security updates or access to new features that could save time in other ways. Another approach would be to always update your libraries to the latest versions soon after they come out. While this is better than the previous approach, it also means you will be spending a lot of extra time refactoring your applications.
 
-In this article, I'll discuss a third approach, which uses a tool called jscodeshift to automate code transformation to speed up migrations so you can take advantage of new libraries or updates without having to manually migrate your project(s).
+In this article, I'll discuss a third approach, which uses a tool called jscodeshift to automate code transformation to speed up refactoring so you can take advantage of new libraries or updates without having to manually migrate your project(s).
 
 _You can find the code from this article, as well as an example Jest test suite, in the [accompanying GitHub repo](https://github.com/Widen/jscodeshift-example)._
 
@@ -62,7 +62,7 @@ When writing codemods, it's often best to break up the problem into each part an
 1. Remove the `queryCache` variable from the `react-query` import, if it exists.
 1. If `queryCache` was imported, add a new import declaration to import it from the new location.
 
-We'll start with step 1, but let's do a quick review of the AST for our example file. Below is a rough outline of the AST, which shows that our file has an `ImportDeclaration` node that contains two `ImportSpecifier` nodes. Each import specifier has an `imported` name and a `local` name that will be important for step 2.
+We'll start with step 1, but first let's do a quick review of the AST for our example file. Below is a rough outline of the AST, which shows that our file has an `ImportDeclaration` node that contains two `ImportSpecifier` nodes. Each import specifier has an `imported` name and a `local` name that will be important for step 2.
 
 ```md
 - ImportDeclaration:
@@ -215,7 +215,7 @@ Congratulations! We've just created our first codemod using jscodeshift!
 
 ## Conclusion
 
-In this article, we explored how to use jscodeshift to automate code transformations to simplify migrations or refactors. While the example I showed might not be useful to you, it should give you an idea of what you can do with jscodeshift. If you want to see a more complex codemod, check out the [PropTypes to TS](https://github.com/mskelton/prop-types-to-ts) project I created.
+In this article, we explored how to use jscodeshift to automate code transformations to simplify refactors. While the example I showed might not be useful to you, it should give you an idea of what you can do with jscodeshift. If you want to see a more complex codemod, check out the [PropTypes to TS](https://github.com/mskelton/prop-types-to-ts) project I created.
 
 Thanks for reading! If you have any questions or comments, feel free to leave them below. Also, if you want the chance to work with some cool people and technology, come [join us](https://www.widen.com/careers)!
 
