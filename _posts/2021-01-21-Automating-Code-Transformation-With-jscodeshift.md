@@ -3,7 +3,7 @@ title: "Automating Code Transformation With jscodeshift"
 date: 2021-01-21
 author: Mark Skelton
 categories: JavaScript codemod jscodeshift
-excerpt: "Tired of manual refactoring? This article shows how to automate code transformations using jscodeshift to reduce manual work when performing jrefactors."
+excerpt: "Tired of manual refactoring? This article shows how to automate code transformations using jscodeshift to reduce manual work when performing refactors."
 ---
 
 The JavaScript ecosystem is fast paced and continuously changing. By the time you finish adopting some fancy new library, another library has come along with people telling you to drop everything and adopt it. Even if you pick a library and stick with it, breaking changes happen from time to time, which add great new features but sometimes mean a long or painful refactor.
