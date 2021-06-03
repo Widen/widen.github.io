@@ -3,7 +3,7 @@ title: "Demystifying TypeScript's Extract Type"
 date: 2021-06-03
 author: Mark Skelton
 categories: TypeScript generics types
-excerpt: "TypeScript's `Extract` type can be confusing to understand and use, so join us to understand what this type does and see some practical examples of when you might want to use it in your applications."
+excerpt: "TypeScript's <code>Extract</code> type can be confusing to understand and use, so join us to understand what this type does and see some practical examples of when you might want to use it in your applications."
 ---
 
 Many of the applications we develop at Widen utilize TypeScript for front-end development to provide a high level of type safety while also remaining familiar to developers who are used to JavaScript. In one such application, a need arose that required a more sophisticated type than we use on a daily basis. After some research, I discovered a solution using TypeScript's `Extract` type. In this post, I'll share a few examples of how you can use `Extract` in your own projects to improve type safety and developer experience.
