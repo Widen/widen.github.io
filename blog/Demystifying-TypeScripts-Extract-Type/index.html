@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Demystifying TypeScript's Extract Type | Widen Engineering</title>
+  <meta name="description" content="TypeScript's `Extract` type can be confusing to understand and use, so join us to understand what this type does and see some practical examples of when you ...">
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/assets/images/favicon/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/assets/images/favicon/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/assets/images/favicon/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/assets/images/favicon/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/assets/images/favicon/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/assets/images/favicon/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/assets/images/favicon/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/assets/images/favicon/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="/assets/images/favicon/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/images/favicon/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon/favicon-16x16.png">
+
+<link rel="manifest" href="/assets/images/favicon/manifest.json"">
+
+<meta name="msapplication-TileColor" content="#B72822">
+<meta name="msapplication-TileImage" content="/assets/images/favicon/ms-icon-144x144.png" | relative_url }}">
+<meta name="theme-color" content="#B72822">
+
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <link rel="canonical" href="https://engineering.widen.com/blog/Demystifying-TypeScripts-Extract-Type/">
+  <link rel="alternate" type="application/rss+xml" title="Widen Engineering" href="/feed.xml" />
+</head>
+
+
+  <body>
+
+    <div class="full-width">
+      <header class="site-header" role="banner">
+  <div class="wrapper">
+    <div class="logo">
+      <a href="/">
+        <img width="400" alt="Widen Engineering Logo" src="https://embed.widencdn.net/img/widen/c17yrvuaac/400px@2x/Widen Engineering White Logo.png?u=mcuc7i">
+      </a>
+    </div>
+    
+      <a class="subscribe" target="_blank" title="Email Subscription" href="https://feedburner.google.com/fb/a/mailverify?uri=WidenEngineering">Subscribe to Updates</a>
+    
+  </div>
+</header>
+
+    </div>
+
+    <div class="wrapper">
+
+      <main class="content" role="main">
+
+        <div class="post">
+    <header>
+        <h1><a title="Demystifying TypeScript's Extract Type" href="/blog/Demystifying-TypeScripts-Extract-Type/">Demystifying TypeScript's Extract Type</a></h1>
+        <time datetime="2021-06-03T00:00:00-05:00">Jun 3, 2021</time> • Mark Skelton
+    </header>
+
+    <article role="article">
+
+      <p>Many of the applications we develop at Widen utilize TypeScript for front-end development to provide a high level of type safety while also remaining familiar to developers who are used to JavaScript. In one such application, a need arose that required a more sophisticated type than we use on a daily basis. After some research, I discovered a solution using TypeScript’s <code class="language-plaintext highlighter-rouge">Extract</code> type. In this post, I’ll share a few examples of how you can use <code class="language-plaintext highlighter-rouge">Extract</code> in your own projects to improve type safety and developer experience.</p>
+
+<h2 id="use-case-extracting-subsets-of-a-union">Use case: Extracting subsets of a union</h2>
+
+<p>To get started with <code class="language-plaintext highlighter-rouge">Extract</code>, let’s look at a simple example. Suppose we have a type <code class="language-plaintext highlighter-rouge">MixedArgs</code>, which is a union type containing four different members of various types. Our goal is to “extract” the members of the union that are functions, which we can do using <code class="language-plaintext highlighter-rouge">Extract</code>. This would look something like this:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">type</span> <span class="nx">MixedArgs</span> <span class="o">=</span> <span class="nx">string</span> <span class="o">|</span> <span class="nx">number</span> <span class="o">|</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="o">|</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">number</span>
+<span class="nx">type</span> <span class="nx">FunctionArgs</span> <span class="o">=</span> <span class="nx">Extract</span><span class="o">&lt;</span><span class="nx">MixedArgs</span><span class="p">,</span> <span class="nb">Function</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<p>The first argument we pass to <code class="language-plaintext highlighter-rouge">Extract</code> is our union type and the second argument is the type that we will use when comparing each member of the union. If a member is assignable to our second argument, it will be included in the resulting type.</p>
+
+<p><em>Pro tip: The second argument to <code class="language-plaintext highlighter-rouge">Extract</code> can also be a union!</em></p>
+
+<p>Since <code class="language-plaintext highlighter-rouge">string</code> and <code class="language-plaintext highlighter-rouge">number</code> are not assignable to <code class="language-plaintext highlighter-rouge">Function</code>, they will not be included in the resulting type. This results in <code class="language-plaintext highlighter-rouge">FunctionArgs</code> evaluating to the following type:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">type</span> <span class="nx">FunctionArgs</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="o">|</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">number</span>
+</code></pre></div></div>
+
+<h2 id="use-case-filterproducts">Use case: <code class="language-plaintext highlighter-rouge">filterProducts</code></h2>
+
+<p>Now that we understand the basic concept, let’s look at a real world example. Say we have an array of products, each of which contains a key <code class="language-plaintext highlighter-rouge">type</code> which is a string to determine what type of object it is. This would look something like this:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">type</span> <span class="nx">Product</span> <span class="o">=</span>
+  <span class="o">|</span> <span class="p">{</span> <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">book</span><span class="dl">"</span><span class="p">;</span> <span class="nl">author</span><span class="p">:</span> <span class="nx">string</span> <span class="p">}</span>
+  <span class="o">|</span> <span class="p">{</span> <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">movie</span><span class="dl">"</span><span class="p">;</span> <span class="nl">producer</span><span class="p">:</span> <span class="nx">string</span> <span class="p">}</span>
+  <span class="o">|</span> <span class="p">{</span> <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">appliance</span><span class="dl">"</span><span class="p">;</span> <span class="nl">manufacturer</span><span class="p">:</span> <span class="nx">string</span> <span class="p">};</span>
+</code></pre></div></div>
+
+<p>Let’s say we want to create a function that takes an array of <code class="language-plaintext highlighter-rouge">Product</code>s and returns only those which match a specified type. This would look something like this:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">filterProducts</span><span class="p">(</span><span class="nx">products</span><span class="p">:</span> <span class="nx">Product</span><span class="p">[],</span> <span class="nx">type</span><span class="p">:</span> <span class="nx">Product</span><span class="p">[</span><span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">])</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">products</span><span class="p">.</span><span class="nx">filter</span><span class="p">((</span><span class="nx">item</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">item</span><span class="p">.</span><span class="nx">type</span> <span class="o">===</span> <span class="nx">type</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>While this function will do exactly what we want at runtime, the type returned from calling <code class="language-plaintext highlighter-rouge">filterProducts(products, 'book')</code> will be <code class="language-plaintext highlighter-rouge">Product[]</code> even though we know that the resulting array won’t contain any <code class="language-plaintext highlighter-rouge">movie</code>s or <code class="language-plaintext highlighter-rouge">appliance</code>s. With the power of <code class="language-plaintext highlighter-rouge">Extract</code>, we can improve this:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">filterProducts</span><span class="o">&lt;</span><span class="nx">T</span> <span class="kd">extends</span> <span class="nx">Product</span><span class="p">,</span> <span class="nx">U</span> <span class="kd">extends</span> <span class="nx">T</span><span class="p">[</span><span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">]</span><span class="o">&gt;</span><span class="p">(</span>
+  <span class="nx">products</span><span class="p">:</span> <span class="nx">T</span><span class="p">[],</span>
+  <span class="nx">type</span><span class="p">:</span> <span class="nx">U</span>
+<span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">products</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span>
+    <span class="p">(</span><span class="nx">item</span><span class="p">):</span> <span class="nx">item</span> <span class="nx">is</span> <span class="nx">Extract</span><span class="o">&lt;</span><span class="nx">T</span><span class="p">,</span> <span class="nx">Record</span><span class="o">&lt;</span><span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">,</span> <span class="nx">U</span><span class="o">&gt;&gt;</span> <span class="o">=&gt;</span> <span class="nx">item</span><span class="p">.</span><span class="nx">type</span> <span class="o">===</span> <span class="nx">type</span>
+  <span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>There is a lot going on here, so let’s break it down. First, we’ve updated the function to accept two generic arguments: <code class="language-plaintext highlighter-rouge">T</code> and <code class="language-plaintext highlighter-rouge">U</code>. TypeScript will infer the value of these generic arguments since we have typed the function parameters using the generic variables. Since each generic argument has a corresponding <a href="https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-constraints">generic constraint</a>, the function will properly type check the arguments provided to the function like it did in the non-generic example we looked at before.</p>
+
+<p>Now that we have our generic arguments, we can add a <a href="https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-constraints">type predicate</a> to our filter function. Our type predicate allows us to instruct TypeScript about the specific type of the argument passed to the function when the function returns <code class="language-plaintext highlighter-rouge">true</code>. <code class="language-plaintext highlighter-rouge">Array.prototype.filter</code> will use this to narrow the type of the resulting array.</p>
+
+<p>The type that our type predicate is narrowing to is <code class="language-plaintext highlighter-rouge">Extract&lt;T, Record&lt;"type", U&gt;&gt;</code>, which probably looks a bit confusing at first. The type we are extracting from is <code class="language-plaintext highlighter-rouge">T</code>, which will be our array of <code class="language-plaintext highlighter-rouge">Product</code>s that we passed to our function. <code class="language-plaintext highlighter-rouge">Record&lt;"type", U&gt;</code> will be an object that looks something like this: <code class="language-plaintext highlighter-rouge">{ type: 'book' }</code>. Just like our previous example with <code class="language-plaintext highlighter-rouge">FunctionArgs</code>, <code class="language-plaintext highlighter-rouge">Extract</code> will return a type containing all members that <code class="language-plaintext highlighter-rouge">{ type: 'book' }</code> is assignable to. Our final resulting type when calling our function will look like this:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">type</span> <span class="nx">Result</span> <span class="o">=</span> <span class="p">{</span> <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">book</span><span class="dl">"</span><span class="p">;</span> <span class="nl">author</span><span class="p">:</span> <span class="nx">string</span> <span class="p">}[];</span>
+</code></pre></div></div>
+
+<p>Neat, right!</p>
+
+<h2 id="bonus-extract-with-template-literal-types">Bonus: Extract with template literal types</h2>
+
+<p>For a little bonus, let’s explore a complex but extremely powerful way of using <code class="language-plaintext highlighter-rouge">Extract</code> with <a href="https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html">template literal types</a> to extract keys from an object with keys matching a specific pattern.</p>
+
+<p>Let’s say we have a <code class="language-plaintext highlighter-rouge">Person</code> type that contains some details about the user.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">type</span> <span class="nx">Person</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+  <span class="nl">email</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+  <span class="nl">homePhone</span><span class="p">:</span> <span class="nx">number</span><span class="p">;</span>
+  <span class="nl">mobilePhone</span><span class="p">:</span> <span class="nx">number</span><span class="p">;</span>
+  <span class="nl">workPhone</span><span class="p">:</span> <span class="nx">number</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>Now, further suppose that we want to create a type from <code class="language-plaintext highlighter-rouge">Person</code> that contains only the phone number keys. This would be fairly simple with <code class="language-plaintext highlighter-rouge">Pick</code> as we could do this:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">type</span> <span class="nx">PhoneInfo</span> <span class="o">=</span> <span class="nx">Pick</span><span class="o">&lt;</span><span class="nx">Person</span><span class="p">,</span> <span class="dl">"</span><span class="s2">homePhone</span><span class="dl">"</span> <span class="o">|</span> <span class="dl">"</span><span class="s2">mobilePhone</span><span class="dl">"</span> <span class="o">|</span> <span class="dl">"</span><span class="s2">workPhone</span><span class="dl">"</span><span class="o">&gt;</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>However, if we have a large number of phone number keys, this will be difficult to maintain and prone to errors. With <code class="language-plaintext highlighter-rouge">Extract</code> and template literal types we can create the <code class="language-plaintext highlighter-rouge">PhoneInfo</code> type very easily with the following code:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">type</span> <span class="nx">PhoneInfo</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="p">[</span><span class="nx">key</span> <span class="k">in</span> <span class="nx">Extract</span><span class="o">&lt;</span><span class="nx">keyof</span> <span class="nx">Person</span><span class="p">,</span> <span class="s2">`</span><span class="p">${</span><span class="nx">string</span><span class="p">}</span><span class="s2">Phone`</span><span class="o">&gt;</span><span class="p">]:</span> <span class="nx">Person</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>The resulting type of <code class="language-plaintext highlighter-rouge">PhoneInfo</code> is the following:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">type</span> <span class="nx">PhoneInfo</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">homePhone</span><span class="p">:</span> <span class="nx">number</span><span class="p">;</span>
+  <span class="nl">mobilePhone</span><span class="p">:</span> <span class="nx">number</span><span class="p">;</span>
+  <span class="nl">workPhone</span><span class="p">:</span> <span class="nx">number</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>I don’t know about you, but the power of type constructs like this is one of the reasons I love TypeScript!</p>
+
+<p>Thanks for reading! If you have any questions or comments, feel free to leave them below. Also, if you want the chance to work with some cool people and technology, come <a href="https://www.widen.com/careers">join us</a>!</p>
+
+
+    </article>
+
+    
+      
+<div class="comments">
+	<div id="disqus_thread"></div>
+	<script type="text/javascript">
+	    var disqus_shortname = 'widen-engineering';
+	    (function() {
+	        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	    })();
+	</script>
+	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+
+    
+</div>
+
+
+      </main>
+
+    </div>
+
+    <div class="full-width">
+      <div class="wrapper">
+    <footer class="site-footer" role="contentinfo">
+        <nav>
+          <ul class="inline">
+          
+            
+          
+            
+          
+            
+          
+            
+            <li>
+                <a href="/open-source">Open Source Guidelines</a>
+            </li>
+            
+          
+            
+          
+            
+          
+            
+          
+          </ul>
+          <br/>
+        </nav >
+        <nav>
+          <ul class="site-social-links inline">
+              <li><a target="_blank" title="RSS Feed" href="/feed.xml"><ion-icon name="logo-rss"></ion-icon></a></li>          
+              <li><a target="_blank" title="GitHub" href="https://github.com/widen"><ion-icon name="logo-github"></ion-icon></a></li>
+              <li><a target="_blank" title="Twitter" href="https://twitter.com/widendev"><ion-icon name="logo-twitter"></ion-icon></a></li>
+          </ul>
+        </nav>
+        <p>© Copyright 2021, <a title="Widen Homepage" target="_blank" href="http://widen.com">Widen Enterprises, Inc.</a></p>
+
+        <p><strong>Looking for work?</strong> <a title="Come engineer with us!" target="_blank" href="http://www.widen.com/careers/">Come engineer with us!</a></p>
+        <p><strong>Something wrong with this page?</strong> Please <a title="Create new issue on bugtracker" target="_blank" href="https://github.com/widen/widen.github.io/issues/new">file a bug</a>.</p>
+        <div class="git-info">
+<nav>
+  <ul class="inline">
+    <li>
+        <a target="_blank" title="View site source on GitHub" href="https://github.com/widen/widen.github.io">source</a>
+    </li>
+    <li>
+        <a target="_blank" title="View current page on GitHub" href="https://github.com/widen/widen.github.io/blob/master/_posts/2021-06-03-Demystifying-TypeScripts-Extract-Type.md">view</a>
+    </li>
+    <li>
+        <a target="_blank" title="Edit current page on GitHub" href="https://github.com/widen/widen.github.io/edit/master/_posts/2021-06-03-Demystifying-TypeScripts-Extract-Type.md">edit</a>
+    </li>
+    <li>
+        <a target="_blank" title="Last site commit" href="https://github.com/widen/widen.github.io/commit/"></a>
+    </li>
+    <li>
+        <a target="_blank" title="Last page commit" href="https://github.com/widen/widen.github.io/commit/"></a>
+    </li>
+  </ul>
+  </nav >
+</div>
+
+    </footer>
+</div>
+
+    </div>
+
+    
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-1206716-19']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+    <script src="https://unpkg.com/ionicons@5.1.2/dist/ionicons.js"></script>
+
+
+  </body>
+
+</html>
