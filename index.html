@@ -2,23 +2,21 @@
 layout: default
 ---
 <div class="posts">
-    <ul>
-      {% for post in site.posts %}
-        <article>
-          <h1>
-            <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-          </h1>
+    {% for post in site.posts %}
+      <article>
+        <h1>
+          <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+        </h1>
 
-          <p class="posts-excerpt">
-            {% if post.excerpt != '' %}
-              {{ post.excerpt | truncatewords: 50 | remove: '<p>' | remove: '</p>' }}
-            {% else %}
-              {{ post.content | strip_html | truncatewords: 50 }}
-            {% endif %}
-          </p>
+        <p class="posts-excerpt">
+          {% if post.excerpt != '' %}
+            {{ post.excerpt | truncatewords: 50 | remove: '<p>' | remove: '</p>' }}
+          {% else %}
+            {{ post.content | strip_html | truncatewords: 50 }}
+          {% endif %}
+        </p>
 
-          <time>{{ post.date | date: "%b %-d, %Y" }}</time> • {{post.author}}
-        </article>
-      {% endfor %}
-    </ul>
+        <time>{{ post.date | date: "%b %-d, %Y" }}</time> • {{post.author}}
+      </article>
+    {% endfor %}
 </div>

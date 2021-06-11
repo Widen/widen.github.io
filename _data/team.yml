@@ -1,9 +1,29 @@
 members:
-    mfeltner:
-      email: mfeltner@widen.com
-      github: feltnerm
-      name: "Mark Feltner"
-    dbeg:
-      email: dbeghin@widen.com
-      github: dbeg
-      name: "Dan Beghin"
+  bdotte:
+    email: bdotte@widen.com
+    github: bdotte
+    name: "Ben Dotte"
+  dbeg:
+    email: dbeghin@widen.com
+    github: dbeg
+    name: "Dan Beghin"
+  jweaver:
+    email: jweaver@widen.com
+    github: jweaver-widen
+    name: "Jordan Weaver"
+  kbrinnehl:
+    email: kbrinnehl@widen.com
+    github: brinnehlops
+    name: "Kevin Brinnehl"
+  mfeltner:
+    email: mfeltner@widen.com
+    github: feltnerm
+    name: "Mark Feltner"
+  mskelton:
+    email: mskelton@widen.com
+    github: mskelton
+    name: "Mark Skelton"
+  twilco:
+    email: twilcock@widen.com
+    github: twilco
+    name: "Tyler Wilcock"
