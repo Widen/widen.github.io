@@ -5,8 +5,8 @@
     <description>The blog of the Widen Engineering Team.</description>
     <link>https://engineering.widen.com/</link>
     <atom:link href="https://engineering.widen.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 03 Jun 2021 15:53:07 -0500</pubDate>
-    <lastBuildDate>Thu, 03 Jun 2021 15:53:07 -0500</lastBuildDate>
+    <pubDate>Fri, 11 Jun 2021 13:09:55 -0500</pubDate>
+    <lastBuildDate>Fri, 11 Jun 2021 13:09:55 -0500</lastBuildDate>
     <generator>Jekyll v3.9.0</generator>
     
       <item>
@@ -133,14 +133,14 @@
 
 &lt;p&gt;Widen, like many companies, makes heavy use of open-source technology, and we’ve made it a part of our mission to give back to this community that we benefit so much from. In light of this, in this post I’ll be talking about some improvements I made to the CSS variables implementation in WebKit.&lt;/p&gt;
 
-&lt;h3 id=&quot;what-is-webkit&quot;&gt;What is WebKit?&lt;/h3&gt;
+&lt;h2 id=&quot;what-is-webkit&quot;&gt;What is WebKit?&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://webkit.org/&quot;&gt;WebKit&lt;/a&gt; is an open-source browser engine that is most famous for powering Safari.  Safari is far from the only place
  you’ll find WebKit, however.  It’s behind every browser on iOS, all web content displayed on PlayStation systems, and in various GTK-based browsers
 such as &lt;a href=&quot;https://github.com/GNOME/epiphany&quot;&gt;Gnome Web&lt;/a&gt;.  WebKit is also deployed to millions of embedded
 devices via the &lt;a href=&quot;https://webkit.org/wpe/&quot;&gt;WebKit Port for Embedded&lt;/a&gt; (WPE) port.&lt;/p&gt;
 
-&lt;h3 id=&quot;css-has-variables&quot;&gt;CSS has variables?&lt;/h3&gt;
+&lt;h2 id=&quot;css-has-variables&quot;&gt;CSS has variables?&lt;/h2&gt;
 
 &lt;p&gt;Yes!  You don’t need a CSS preprocessor to use variables in your CSS.  Here’s what the syntax looks like:&lt;/p&gt;
 
@@ -174,12 +174,12 @@ they can be used in media queries, and can be manipulated with JavaScript.&lt;/p
 
 &lt;p&gt;CSS variables are also known as custom properties.  For a more detailed overview of CSS variables, read more &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties&quot;&gt;on MDN&lt;/a&gt;.&lt;/p&gt;
 
-&lt;h3 id=&quot;improvements-to-webkits-css-variables-implementation&quot;&gt;Improvements to WebKit’s CSS variables implementation&lt;/h3&gt;
+&lt;h2 id=&quot;improvements-to-webkits-css-variables-implementation&quot;&gt;Improvements to WebKit’s CSS variables implementation&lt;/h2&gt;
 
 &lt;p&gt;You can find the diff for each fixed bug by following the &lt;a href=&quot;https://bugs.webkit.org&quot;&gt;bugs.webkit.org&lt;/a&gt; sub-header link and clicking “Formatted Diff” on the
 patch.&lt;/p&gt;
 
-&lt;h4 id=&quot;safer-handling-of-overly-long-css-variables&quot;&gt;Safer handling of overly long CSS variables&lt;/h4&gt;
+&lt;h3 id=&quot;safer-handling-of-overly-long-css-variables&quot;&gt;Safer handling of overly long CSS variables&lt;/h3&gt;
 &lt;div class=&quot;bugzilla-subheader&quot;&gt;&lt;a href=&quot;https://bugs.webkit.org/show_bug.cgi?id=216407&quot;&gt;https://bugs.webkit.org/show_bug.cgi?id=216407&lt;/a&gt;&lt;/div&gt;
 
 &lt;p&gt;One useful property of CSS variables is that the value of one variable can be the expansion of another. However, this can get out of hand when used maliciously:&lt;/p&gt;
@@ -213,7 +213,7 @@ snippet where the &lt;code class=&quot;language-plaintext highlighter-rouge&quot
 &lt;p&gt;Before this patch, CSS-wide keywords were not parsed in the context of variable fallbacks, and therefore were always considered invalid values.  This
 includes &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;inherit&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;initial&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;revert&lt;/code&gt;, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;unset&lt;/code&gt;.&lt;/p&gt;
 
-&lt;h4 id=&quot;resolve-relative-path-urls-in-url-against-the-correct-base-url-when-css-variables-are-involved&quot;&gt;Resolve relative-path URLs in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;url()&lt;/code&gt; against the correct base URL when CSS variables are involved&lt;/h4&gt;
+&lt;h3 id=&quot;resolve-relative-path-urls-in-url-against-the-correct-base-url-when-css-variables-are-involved&quot;&gt;Resolve relative-path URLs in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;url()&lt;/code&gt; against the correct base URL when CSS variables are involved&lt;/h3&gt;
 &lt;div class=&quot;bugzilla-subheader&quot;&gt;&lt;a href=&quot;https://bugs.webkit.org/show_bug.cgi?id=198512&quot;&gt;https://bugs.webkit.org/show_bug.cgi?id=198512&lt;/a&gt;&lt;/div&gt;
 
 &lt;p&gt;Given this folder structure:&lt;/p&gt;
@@ -255,7 +255,7 @@ This means that all of the &lt;code class=&quot;language-plaintext highlighter-r
 tracks the base URL that should be used to resolve any &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;url()&lt;/code&gt; in the value, rather than unconditionally resolving them against the
 base document URL.&lt;/p&gt;
 
-&lt;h4 id=&quot;prevent-visited-styles-from-erroneously-being-applied-to-non-visited-links-when-css-variables-are-present-in-the-rule&quot;&gt;Prevent :visited styles from erroneously being applied to non-visited links when CSS variables are present in the rule&lt;/h4&gt;
+&lt;h3 id=&quot;prevent-visited-styles-from-erroneously-being-applied-to-non-visited-links-when-css-variables-are-present-in-the-rule&quot;&gt;Prevent :visited styles from erroneously being applied to non-visited links when CSS variables are present in the rule&lt;/h3&gt;
 &lt;div class=&quot;bugzilla-subheader&quot;&gt;&lt;a href=&quot;https://bugs.webkit.org/show_bug.cgi?id=210525&quot;&gt;https://bugs.webkit.org/show_bug.cgi?id=210525&lt;/a&gt;&lt;/div&gt;
 
 &lt;p&gt;Given:&lt;/p&gt;
@@ -304,7 +304,7 @@ any time the function returns.&lt;/p&gt;
 &lt;p&gt;Instead, any time this state is mutated during variable expansion, it’s now done so with a utility within WebKit called
 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SetForScope&lt;/code&gt;, which automatically rolls the changed state back to its original value when the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SetForScope&lt;/code&gt; is destroyed.&lt;/p&gt;
 
-&lt;h3 id=&quot;future-work&quot;&gt;Future work&lt;/h3&gt;
+&lt;h2 id=&quot;future-work&quot;&gt;Future work&lt;/h2&gt;
 
 &lt;p&gt;Currently, CSS variables used in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@keyframes&lt;/code&gt; animations in WebKit &lt;a href=&quot;https://bugs.webkit.org/show_bug.cgi?id=201736&quot;&gt;are broken&lt;/a&gt;.
 I haven’t got around to fixing this one yet, but hope to do so soon.&lt;/p&gt;
